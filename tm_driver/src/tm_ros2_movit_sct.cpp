@@ -214,8 +214,9 @@ bool TmRos2SctMoveit::has_points(const trajectory_msgs::msg::JointTrajectory &tr
 {
   if (traj.points.size() == 0) return false;
   for (auto &point : traj.points) {
-    if (point.positions.size() != traj.joint_names.size() ||
-      point.velocities.size() != traj.joint_names.size()) return false;
+    if (point.positions.size() != traj.joint_names.size()) return false;
+    // Allow trajectories without velocities - we'll compute them in set_pvt_traj if missing
+    if (point.velocities.size() != 0 && point.velocities.size() != traj.joint_names.size()) return false;
   }
   return true;
 }
